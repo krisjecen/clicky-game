@@ -8,19 +8,30 @@ var clickArray = []
 class App extends React.Component {
   state = {
     friends,
-    clicked: []
+    clicked: [],
+    score: 0,
+    topScore: 0
   }  
 
-  removeFriend = id => {
-    // console.log(id)
-    if (!clickArray.includes(id)) {
+  userPlay = id => {
+    // if the user's play has not already been clicked
+    // and the current score is the same as the top score...
+    if (!clickArray.includes(id) && this.state.score === this.state.topScore) {
+      // ...add the id of the play to the array
       clickArray.push(id)
-      this.setState( { clicked: clickArray })
+      // ...increment both scores by one
+      this.setState( { clicked: clickArray, score: this.state.score + 1, topScore: this.state.topScore + 1 })
+    } // 
+      else if (!clickArray.includes(id) && this.state.score < this.state.topScore) {
+        clickArray.push(id)
+        this.setState( { clicked: clickArray, score: this.state.score + 1 }) 
     } else {
       clickArray = []
       this.setState( { clicked: clickArray })
+      this.setState( { score: 0 })
       console.log("You already clicked that one.")
     }
+
     console.log(this.state.clicked)
   }
 
@@ -28,10 +39,11 @@ class App extends React.Component {
     return (
       <Wrapper>
         <h1 className='title'>Clicky Game</h1>
-        <h3 className='title'>You've clicked {this.state.clicked.length}</h3>
+        <h3 className='title'>Your score: {this.state.score}</h3>
+        <h3 className='title'>Top score: {this.state.topScore}</h3>
         {this.state.friends.map(friend => (
           <FriendCard
-            removeFriend={this.removeFriend}
+            userPlay={this.userPlay}
             id={friend.id}
             key={friend.id}
             image={friend.image}
