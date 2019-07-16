@@ -12,9 +12,15 @@ class App extends React.Component {
   }  
 
   removeFriend = id => {
-    console.log(id)
-    clickArray.push(id)
-    this.setState( { clicked: clickArray })
+    // console.log(id)
+    if (!clickArray.includes(id)) {
+      clickArray.push(id)
+      this.setState( { clicked: clickArray })
+    } else {
+      clickArray = []
+      this.setState( { clicked: clickArray })
+      console.log("You already clicked that one.")
+    }
     console.log(this.state.clicked)
   }
 
@@ -28,10 +34,7 @@ class App extends React.Component {
             removeFriend={this.removeFriend}
             id={friend.id}
             key={friend.id}
-            // name={friend.name}
             image={friend.image}
-            // occupation={friend.occupation}
-            // location={friend.location}
           />
         ))}
       </Wrapper>
