@@ -18,12 +18,34 @@ class App extends React.Component {
     gameStatus: 'Click any picture below to begin!'
   }  
 
+  shuffle = (array) => {
+    array = this.state.friends
+    var currentIndex = array.length;
+	  var temporaryValue, randomIndex;
+
+	  // While there remain elements to shuffle...
+	  while (0 !== currentIndex) {
+		// Pick a remaining element...
+		  randomIndex = Math.floor(Math.random() * currentIndex);
+		  currentIndex -= 1;
+
+		// And swap it with the current element.
+		  temporaryValue = array[currentIndex];
+		  array[currentIndex] = array[randomIndex];
+		  array[randomIndex] = temporaryValue;
+	  }
+
+	  return array;
+  }
+
   userPlay = id => {
     // if the user's play has not already been clicked
     // and the current score is the same as the top score...
     if (!clickArray.includes(id) && this.state.score === this.state.topScore) {
       // ...add the id of the play to the array
       clickArray.push(id)
+      // shuffle the array
+
       // ...increment both scores by one
       this.setState( { 
         clicked: clickArray, 
@@ -34,8 +56,8 @@ class App extends React.Component {
     } // if the current score is less than the top score
       else if (!clickArray.includes(id) && this.state.score < this.state.topScore) {
         /* do everything above but don't increment the top score.
-        i tried to make this code drier by setting the topScore equal to the score, but it wouldn't
-        update, it would stay one behind the current score.
+        i tried to make this code drier by setting the topScore equal to the score, but the scores
+        didn't update simultaneously; the top score stayed one behind the current score.
         */
         clickArray.push(id)
         this.setState( { 
@@ -61,6 +83,7 @@ class App extends React.Component {
         <h2 className='title'>Your score: {this.state.score} | Top score: {this.state.topScore}</h2>
         {this.state.friends.map(friend => (
           <FriendCard
+            shuffle={this.shuffle}
             userPlay={this.userPlay}
             id={friend.id}
             key={friend.id}
