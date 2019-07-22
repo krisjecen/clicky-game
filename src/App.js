@@ -18,8 +18,8 @@ class App extends React.Component {
     gameStatus: 'Click any picture below to begin!'
   }  
 
-  shuffle = (array) => {
-    array = this.state.friends
+  shuffle = () => {
+    var array = this.state.friends
     var currentIndex = array.length;
 	  var temporaryValue, randomIndex;
 
@@ -73,6 +73,12 @@ class App extends React.Component {
       this.setState( { clicked: clickArray, score: 0, gameStatus: 'Oops, you lost. Click a picture to start playing again!' })
     }
 
+    // game status text update for max score achieved (win)
+    // would like to implement this without having to embed it within another if statement
+    // if the player has achieved the highest score...
+    // if (this.state.score === 12) {
+    //   this.setState( { gameStatus: 'Nice going! You\'ve won! Play again?'} )
+    // }
   }
 
   render() {
